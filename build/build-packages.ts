@@ -2,7 +2,7 @@
  * 安装依赖 pnpm install rollup @rollup/plugin-node-resolve @rollup/plugin-commonjs rollup-plugin-typescript2 rollup-plugin-vue -D -w
  */
 import path, { resolve } from "path"
-import { parallel } from "gulp"
+import { series } from "gulp"
 import { rollup, OutputOptions } from "rollup"
 import glob, { sync } from "fast-glob" // 同步查找文件
 import { Project, SourceFile, ScriptTarget, ModuleKind } from "ts-morph"
@@ -11,69 +11,7 @@ import { mkdir, readFile, writeFile } from 'fs/promises'
 import { buildOutRoot, componentsRoot, utilsRoot, packagesRoot, lmVue3LibraryRoot, projectRoot } from "./utils/paths"
 import { buildPackagesOutConfig } from './utils/config'
 import rollupBaseConfig from './rollup.base.config'
-
-import fs from "fs"
-import os from "os"
-import { template, upperFirst, camelCase } from "lodash"
-const upperCamelCase = (str) => upperFirst(camelCase(str))
-
-const endOfLine = os.EOL
-// 动态创建入口
-// 创建整个packages 组件入口
-export const createPackagesEntry = async () => {
-    const COMPONENT_IMPORT_TEMPLATE = `import <%= name %> from '@lm-vue3-library/components/<%= pkgName %>/index';`
-    const MAIN_IMPORT_TEMPLATE = `
-<%= importText %>
-const components = [
-    <%= installText %>
-];
-const install = function(app) {
-    components.forEach((component) => {
-        app.use(component)
-    })
-};
-/* istanbul ignore if */
-export {
-// components
-   <%= exportText %>
-};
-export default {
-   install
-};`
-    const allImportComponents: Array<any> = []
-    const allInstallComponents: Array<any> = []
-    const componentImportCompiled = template(MAIN_IMPORT_TEMPLATE)
-
-    const componentTplCompiled = template(COMPONENT_IMPORT_TEMPLATE)
-    // 1. 按照目录查找，生成index.ts文件引用
-    const componentFiles = sync("*", {
-        cwd: componentsRoot,
-        // 只查找文件夹
-        onlyDirectories: true
-    })
-    // 找到每个组件的入口文件 index.ts
-    const componentList: Array<string> = componentFiles.map((componentName: string) => {
-        // 找到每个组件的入口文件 index.ts
-        const componentPath = resolve(componentsRoot, componentName, "index.ts")
-        // 拼接入口
-        const compName = upperCamelCase(componentName)
-        allImportComponents.push(
-            componentTplCompiled({
-                name: upperCamelCase(compName),
-                pkgName: componentName
-            })
-        )
-        allInstallComponents.push(`${compName}`)
-        return componentPath
-    })
-    const entryFileText = componentImportCompiled({
-        importText: allImportComponents.join(endOfLine),
-        installText: allInstallComponents.join(',' + endOfLine),
-        exportText: allInstallComponents.join(',' + endOfLine)
-    })
-    // 输出入口
-    fs.writeFileSync(`${lmVue3LibraryRoot}/index.ts`, entryFileText)
-}
+import { createPackagesIndex } from './new/packages'
 
 // 打包整个 package 包入口
 export const buildPackages = async () => {
@@ -151,9 +89,7 @@ export const buildPackagesTypes = async () => {
 
   await Promise.all(tasks);
 }
-// 
-export const createPackagesEntryParallel = parallel(createPackagesEntry)
 // gulp适合流程控制和代码的转义  没有打包的功能
-export const buildPackagesParallel = parallel(buildPackages)
+export const buildPackagesSeries = series(createPackagesIndex, buildPackages)
 
-export default buildPackagesParallel
+export default buildPackagesSeries

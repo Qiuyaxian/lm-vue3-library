@@ -1,0 +1,19 @@
+<% importComponents.forEach(function(item){ %>import <%= item.name %> from '@lm-vue3-library/components/<%= item.pkgName %>/index';
+<% }); %>
+
+const components = [
+  <%= installComponents %>
+];
+const install = function(app) {
+    components.forEach((component) => {
+        app.use(component)
+    })
+};
+
+export {
+  <%= installComponents %>
+};
+
+export default {
+   install
+};

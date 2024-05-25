@@ -1,0 +1,14 @@
+[
+  {
+    "title": "公共组件",
+    "name": "common",
+    "text": "公共组件(common)",
+    "collapsable": false,
+    "items": [
+      {
+        "link": "/common/ymdemo",
+        "text": "测试组件(ymdemo)"
+      }
+    ]
+  }
+]

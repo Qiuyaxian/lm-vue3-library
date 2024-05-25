@@ -1,0 +1,17 @@
+<template>
+  <div class="<%= kebabCaseComponentName %>">
+    <%= componentName %>
+  </div>
+</template>
+<script lang="ts">
+import { defineComponent } from "vue";
+import { <%= componentName %>Props } from './<%= componentName %>.ts'
+export default defineComponent({
+  name: "<%= kebabCaseComponentName %>",
+  props: <%= componentName %>Props,
+  setup() {
+    return {
+    };
+  },
+})
+</script>

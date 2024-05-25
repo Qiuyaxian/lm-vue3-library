@@ -2,7 +2,7 @@
 
 ## 简介
 
-基于rollup打包器实现代码组件库
+基于 rollup + esbuild 打包器实现代码组件库
 
 ## 安装使用
 
@@ -14,7 +14,7 @@ yarn add library-rollup -S --registry=xxx
 npm install library-rollup -S --registry=xxx
 ```
 
-::: warning yarn 或 npm i 安装报 Couldn't find package "library-rollup" on the "npm" registry
+::: warning yarn 或 npm i 安装报 Couldn't find package "xxx" on the "npm" registry
 在项目根目录添加 .npmrc 文件，在 .npmrc 文件内设置内服安装地址，参考 [解决方案二](https://blog.csdn.net/qq_35310623/article/details/129044185)
 :::
 

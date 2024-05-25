@@ -23,11 +23,9 @@ export * from './build-types';
 export default series(
   // 删除dist目录
   withTaskName('clean', async () => run('rimraf ./dist')),
-  // 生成入口文件
-  withTaskName('createEntry', () => run('npm run build createPackagesEntryParallel')),
   parallel(
     // 打包umd,commonjs
-    withTaskName("buildPackagesParallel", () => run("npm run build buildPackagesParallel")),
+    withTaskName("buildPackagesSeries", () => run("npm run build buildPackagesSeries")),
     // 打包按需加载
     withTaskName('buildComponentsSeries', () => run('npm run build buildComponentsSeries')),
     // 打包工具方法
@@ -35,5 +33,6 @@ export default series(
     // 打包样式
     withTaskName('buildThemeChalkSeries', () => run('npm run build buildThemeChalkSeries')),
   ),
+  // 生成描述文件
   parallel(withTaskName('buildTypes', () => run('npm run build buildTypes')))
 )

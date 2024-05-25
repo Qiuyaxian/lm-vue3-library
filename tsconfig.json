@@ -1,7 +1,8 @@
 {
     "ts-node": {
+        "esm": true,
         "compilerOptions": {
-            "module": "commonjs" 
+            "module": "commonjs"
         }
     },
     "compilerOptions": {
@@ -45,6 +46,7 @@
     //     ]
     // },
     "include": [
+        "build/**/*.ts",
         "packages/**/*.ts",
         "packages/**/*.tsx",
         "packages/**/*.vue",
