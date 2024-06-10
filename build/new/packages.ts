@@ -20,7 +20,7 @@ export const createPackagesIndex = async () => {
       onlyDirectories: true
   })
   // 找到每个组件的入口文件 index.ts
-  const componentList: Array<string> = componentFiles.map((componentName: string) => {
+  componentFiles.map((componentName: string) => {
       // 找到每个组件的入口文件 index.ts
       const componentPath = resolve(componentsRoot, componentName, "index.ts")
       // 拼接入口

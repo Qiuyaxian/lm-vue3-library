@@ -2,8 +2,6 @@ import fs from "fs"
 import path from "path"
 import inquirer from "inquirer"
 import { docsRoot } from "../utils/paths"
-// import { getComponent } from './component'
-
 const createQuestion = () => {
   const docsConfigPath = path.join(docsRoot, './docs.json')
   let componentTypes: Array<any> = []

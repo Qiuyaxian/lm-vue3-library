@@ -1,9 +1,7 @@
 import fs from "fs"
-import os from "os"
 import path from "path"
 import ejs from 'ejs'
 import { series } from "gulp"
-import glob, { sync } from "fast-glob" // 同步查找文件
 
 import { getComponentName, getKebabCase, getUpperCamelCase, fileSave } from "../utils/index"
 import { docsRoot, buildNewRoot } from "../utils/paths"
@@ -65,7 +63,6 @@ export const createNewDocs = async (name, chineseName, opt) => {
   } else {
     const SHORT_MD_PATH = `/${componentType}/${kebabCaseComponentName}`
     let currentComponentType = docsConfigs.find((item) => item.name === componentType)
-    console.log(currentComponentType, 'currentComponentType')
     if (!currentComponentType) {
       currentComponentType = {
         title: chineseComponentType,
@@ -92,7 +89,6 @@ export const createNewDocs = async (name, chineseName, opt) => {
       })
     }
   }
-  console.log(docsConfigs, 'docsConfigPath')
   createDocsTemplate(name, docPath)
   createDemoTemplate(name, demoPath)
   // 保持配置

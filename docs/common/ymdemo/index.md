@@ -1,11 +1,5 @@
 ## Ymdemo 按钮
 
-<ymdemo>默认按钮</ymdemo>
+### 方式一
 
-::: details 显示代码
-
-```html
-<ymdemo>默认按钮</ymdemo>
-
-:::
-
+<demo src="./demo/1.vue" />
